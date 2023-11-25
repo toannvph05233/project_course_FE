@@ -46,9 +46,14 @@ export class LearnDetailComponent implements OnInit {
         this.lessons = data
       })
       this.myCourseService.getMyCourseLearn(this.idCourse).subscribe((data) => {
+        console.log("data")
+        console.log("data")
+        console.log(data)
         this.myCourse = data
         this.idMyCourse = data.idMyCourse
         this.completionProgress = data.lessonList.length
+      },(e)=>{
+        alert("lỗi")
       })
     })
   }
