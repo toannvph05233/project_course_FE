@@ -29,6 +29,7 @@ export class CourseDetailComponent implements OnInit, OnChanges {
   idCmt: any
   idCourse: any
   course: any
+  recommend: any
   noti: any
   notiRating: any
   isUser: boolean = false
@@ -72,6 +73,9 @@ export class CourseDetailComponent implements OnInit, OnChanges {
     this.connect()
     this.route.paramMap.subscribe(paramMap => {
       this.idCourse = paramMap.get('idCourse');
+      this.courseService.recommend(this.idCourse).subscribe((data) => {
+        this.recommend = data
+      })
       this.courseService.findById(this.idCourse).subscribe((data) => {
         this.course = data
 

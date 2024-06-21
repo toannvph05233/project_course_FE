@@ -10,6 +10,7 @@ import {Stomp} from "@stomp/stompjs";
 import {ChangeProfileUser} from "../../model/ChangeProfileUser";
 import {UserProfileService} from "../service/user-profile.service";
 import {RequestRecharge} from "../../model/RequestRecharge";
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-user-payment',
   templateUrl: './user-payment.component.html',
@@ -22,7 +23,7 @@ export class UserPaymentComponent implements OnInit {
   proFile!: ChangeProfileUser
   reqRecharges: RequestRecharge[] =[]
   g: any;
-  constructor(private reqChargeService:ReqRechargeService, private userService: UserProfileService,private billService:AdminBillService,private loginService:LoginService) { }
+  constructor(private reqChargeService:ReqRechargeService, private userService: UserProfileService,private billService:AdminBillService,private loginService:LoginService,private router:Router,) { }
 
   ngOnInit(): void {
     this.billService.getAllByIdUser().subscribe((data)=>{
@@ -46,6 +47,10 @@ export class UserPaymentComponent implements OnInit {
   rechargeForm = new FormGroup({
     money: new FormControl("",[Validators.min(20),Validators.required])
   })
+
+  rechargeVNPAYForm = new FormGroup({
+    money: new FormControl("",[Validators.min(20),Validators.required])
+  })
   p: any
   reqRecharge(){
         this.reqChargeService.reqRecharge(this.rechargeForm.value).subscribe(()=>{
@@ -60,6 +65,17 @@ export class UserPaymentComponent implements OnInit {
           })
         })
   }
+
+  reqRechargeVnPay(){
+    this.reqChargeService.reqRechargeVNPAY(this.rechargeVNPAYForm.value).subscribe(resp=>{
+      this.sendNotification('Request Recharge','earning')
+      this.rechargeVNPAYForm.reset()
+      this.message()
+      window.open(resp.url);
+      this.router.navigate(["/user"]);
+    })
+  }
+
   message(){
     Swal.fire({
       title: 'Deposit request sent successfully! Please transfer money to our bank account',

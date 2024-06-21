@@ -21,6 +21,9 @@ export class ReqRechargeService {
   reqRecharge(money:any):Observable<any>{
     return this.http.post<any>(API_URL+"/wallet/reqRecharge",money)
   }
+  reqRechargeVNPAY(money:any):Observable<any>{
+    return this.http.post<any>(API_URL+"/api/pay/vnpay/" + money.money,{a:1})
+  }
   getAllbyUser():Observable<RequestRecharge[]>{
     return this.http.get<RequestRecharge[]>(API_URL+"/admin/reqRechardUser")
   }
